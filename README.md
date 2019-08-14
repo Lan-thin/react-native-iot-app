@@ -1,1 +1,0 @@
-# react-native-iot-app
