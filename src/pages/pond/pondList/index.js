@@ -7,19 +7,36 @@
 import React, {PureComponent} from 'react'
 import {
     View,
-    Text
+    Text,
+    StyleSheet
 } from 'react-native'
 
+import PondItem from '../../../component/pondItem'
+import * as $config from '../../../config'
 class PondList extends PureComponent{
     constructor(props){
         super(props)
     }
+    componentWillMount(){
+        console.log(global.$config)
+    }
     render(){
         return (
-            <View>
-                <Text>home</Text>
+            <View style={styles.page}>
+                <PondItem />
             </View>
         )
     }
 }
+
 export default PondList
+
+const styles = StyleSheet.create({
+    page: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        backgroundColor: $config.color.PAGE_BG_COLOR
+
+    }
+})

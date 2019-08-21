@@ -33,13 +33,26 @@ import {
 import Routers from './src/Routes/routers'
 // import {createStackNavigator} from 'react-navigation'
 import AppInit from './src/utils/global'
+import {Provider} from 'react-redux'
+import * as redux from './src/redux'
+import {createAppContainer} from 'react-navigation'
+
+const AppContainer = createAppContainer(Routers);
+console.log(redux)
+const store = redux.store()
 
 
 // 全局变量初始化
 AppInit()
 const App = ()=> {
   return (
-    <Routers></Routers>
+    <Provider store={store}>
+      <AppContainer 
+        uriPrefix="/app"
+        ref= {nav => {
+          this.nav = nav
+        }}/>
+    </Provider>
   )
 }
 // const App = () => {

@@ -6,8 +6,10 @@
  */
 import * as config from '../../config'
 import ajax from './ajax'
+import * as redux from '../../redux'
 
 export default ()=> {
     global.$config = config
     global.$ajax = ajax
+    global.$redux = redux
 }

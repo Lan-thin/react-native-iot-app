@@ -51,4 +51,4 @@ const Routers = createStackNavigator({
     }
     
 )
-export default createAppContainer(Routers)
+export default Routers
