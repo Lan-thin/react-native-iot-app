@@ -9,30 +9,43 @@ import {
 } from 'react-native';
 const {width, height} = Dimensions.get('window');
 import * as $config from '../config'
-
 export default class PondItem extends PureComponent{
     constructor(props) {
         super(props)
     }
+    clickItem() {
+        const { item, nav} = this.props
+
+        // this.props.navigation.navigate('D', {key: params.key})
+        console.log(this.props)
+        nav('PondDetail', { id: item.id });
+    }
     render(){
+        console.log(this.props)
+        const {activitySwitchCount, fishTypeName, id, name, warningLevel} = this.props.item
+        let imageUrl = warningLevel ? require('../assert/images/pool_icon_warn.png') : require('../assert/images/home_active.png')
+
+        let statusText = warningLevel ? '有异常' : activitySwitchCount ? '增氧中' : '空闲中'
+        let activeText = activitySwitchCount ? `${activitySwitchCount}台增氧机开启中` : `无运行中的增氧机`
         return (
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={this.clickItem.bind(this)}>
                 <View style={styles.pondContent}>
                     <View style={styles.pond}>
                         <View style={styles.itemLine}>
                             <View style={styles.item}>
-                                <Image style={styles.pondImage} source={require('../assert/images/home_active.png')}></Image>
-                                <Text style={styles.pondName}>12号塘</Text>
+                                <Image style={styles.pondImage} source={imageUrl}></Image>
+                                <Text style={styles.pondName}>{name}</Text>
                             </View>
-                            <View style={styles.item}>
-                                <View style={styles.pondRadius}></View>
-                                <Text>空闲中</Text>
+                            <View style={[styles.item]}>
+                                <View style={[styles.pondRadius, warningLevel ? styles.warn: '']}></View>
+                                <Text style={[styles.statusText, warningLevel ? styles.warnText: '']}>{statusText}</Text>
                             </View>
 
                         </View>
                         <View style={styles.itemLine}>
-                            <Text>黑鱼</Text>
-                            <Text>无运行中的增氧机</Text>
+                            <Text>{fishTypeName}</Text>
+                            <Text>{activeText}</Text>
                         </View>
                     </View>
                 </View>
@@ -55,11 +68,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingVertical: 15,
         paddingHorizontal: 20,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderRadius: 7
     },
     item:{
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    statusText:{
+        fontWeight: 'bold'
     },
     pondImage: {
         width: 22,
@@ -70,6 +87,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 15,
         color: $config.color.TEXT_COLOR
+    },
+    warn:{
+        backgroundColor: $config.color.WARN_COLOR,
+    },
+    warnText: {
+        color: $config.color.WARN_COLOR
     },
     pondRadius: {
         width: 6,

@@ -14,6 +14,7 @@ import * as $config from '../config'
 import PondList from '../pages/pond/pondList'
 import TabBar from './tabBar'
 import User from '../pages/user/index'
+import PondDetail from '../pages/pond/pondDetail'
 const Routers = createStackNavigator({
         PondList: {
             screen: TabBar,
@@ -31,6 +32,25 @@ const Routers = createStackNavigator({
                 },
 				headerRight: <View />,
 				headerLeft: <View />
+            }
+        },
+        PondDetail: {
+            screen: PondDetail,
+            navigationOptions: {
+                title: '鱼塘详情',
+                headerBackTitle: '返回',
+				headerTruncatedBackTitle: '',
+				headerTitleStyle: {
+					flex: 1,
+                    textAlign: 'center', 
+                    fontWeight: 'bold'
+                },
+                headerTintColor: $config.color.WHITE_COLOR,
+                headerStyle:{
+                    backgroundColor: $config.color.MAIN_COLOR
+                },
+				headerRight: <View />,
+				// headerLeft: <View />
             }
         }
     },{

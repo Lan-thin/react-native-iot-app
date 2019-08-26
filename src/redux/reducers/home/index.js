@@ -1,5 +1,4 @@
 import * as types from '../../constants'
-
 const initState = {
     userPondInfo: {}
 }
@@ -8,7 +7,7 @@ export default function home(state = initState, action) {
         case types.home.GET_POND_LIST: 
             return {
                 ...state,
-                userPondInfo: action.userPondInfo
+                userPondInfo: action.data
             }
             break;
         default:

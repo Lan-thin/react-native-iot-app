@@ -1,20 +1,20 @@
 import * as types from '../../constants'
 
-const getPondList = (params = {})=> {
+const getPondInfo = (poolId)=> {
     
     return dispatch => {
         global.$ajax({
-            url: 'pools',
+            url: `pools/${poolId}`,
             // data: params.data
         }, (res = {}) => {
             const { code, data } = res;
             dispatch({
-                type: types.home.GET_POND_LIST,
+                type: types.detail.GET_POND_INFO,
                 data
             })
         })
     }
 }
 export {
-    getPondList
+    getPondInfo
 }

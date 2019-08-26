@@ -1,0 +1,2 @@
+export const GET_POND_INFO = 'GET_POND_INFO'
+export const GET_SWITCH_LIST = 'GET_SWITCH_LIST'
