@@ -6,7 +6,9 @@
  */
 import * as color from './color'
 import * as appConfig from './appConfig'
+import * as fontSize from './fontSize'
 export {
     color,
-    appConfig
+    appConfig,
+    fontSize
 }

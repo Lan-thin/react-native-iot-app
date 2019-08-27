@@ -17,11 +17,9 @@ export default class PondItem extends PureComponent{
         const { item, nav} = this.props
 
         // this.props.navigation.navigate('D', {key: params.key})
-        console.log(this.props)
         nav('PondDetail', { id: item.id });
     }
     render(){
-        console.log(this.props)
         const {activitySwitchCount, fishTypeName, id, name, warningLevel} = this.props.item
         let imageUrl = warningLevel ? require('../assert/images/pool_icon_warn.png') : require('../assert/images/home_active.png')
 

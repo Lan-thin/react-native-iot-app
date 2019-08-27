@@ -16,6 +16,7 @@ export default function comon(state = initState, action) {
                 ...state,
                 loading: false
             }
+            break;
         default:
             return state
     }

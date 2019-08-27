@@ -36,9 +36,8 @@ import AppInit from './src/utils/global'
 import {Provider} from 'react-redux'
 import * as redux from './src/redux'
 import {createAppContainer} from 'react-navigation'
-
+import Loading from './src/component/loading'
 const AppContainer = createAppContainer(Routers);
-console.log(redux)
 const store = redux.store()
 
 
@@ -52,6 +51,7 @@ const App = ()=> {
         ref= {nav => {
           this.nav = nav
         }}/>
+      <Loading />
     </Provider>
   )
 }

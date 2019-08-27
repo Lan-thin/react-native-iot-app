@@ -3,5 +3,6 @@ import * as common from './common'
 import * as detail from './detail'
 export {
     home,
-    detail
+    detail,
+    common
 }

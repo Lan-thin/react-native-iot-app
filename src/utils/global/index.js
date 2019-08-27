@@ -7,9 +7,11 @@
 import * as config from '../../config'
 import ajax from './ajax'
 import * as redux from '../../redux'
+import * as filter from './filter'
 
 export default ()=> {
     global.$config = config
     global.$ajax = ajax
     global.$redux = redux
+    global.$utils = filter
 }

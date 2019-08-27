@@ -28,9 +28,14 @@ const getSwitchList = (deviceList) => {
         })
     }
     deviceList && deviceList.length && deviceList.map((item,index) => {
+        const {warningLevel} = item
         item.switchList && item.switchList.map((sItem, sIndex) => {
             const {xline, yline, bindStatus} = sItem
             if (bindStatus) {
+                // 如果是控制器异常了将控制器的异常传给增氧机
+                if(global.$utils.isDeviceWarn(warningLevel)) {
+                    sItem.warningLevel = warningLevel
+                }
                 let switchIndex = xline * 6 + yline
                 switchList[switchIndex] = sItem
             }

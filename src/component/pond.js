@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     Image,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 
 } from 'react-native'
 import {connect} from 'react-redux'
@@ -19,20 +20,20 @@ class Pond extends PureComponent{
         super(props)
 
     }
+    componentDidMount(){
+    }
     
     render(){
         const vm = this
-        const {switchList, type} = vm.props
-
+        const {switchList, type, selectSwitch} = vm.props
         return(
-            <View style={styles.pond}>
-               {
-                    switchList && switchList.length && switchList.map((item, index) => {
+            <View style={[styles.pond, {height: $config.fontSize.scaleSizeW(690)}]}>
+                {
+                    switchList.map((item, index) => {
                         return (
-                            <SwitchItem item={item} key={index} type={type}></SwitchItem>
+                            <SwitchItem item={item} key={index} type={type}/>
                         )
                     })
-
                 }
             </View>
         )
@@ -45,22 +46,23 @@ const mapStateToProps = (state)=> {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        selectSwitch: (switchInfo)=> {
+            dispatch(global.$redux.actions.detail.selectSwitch(switchInfo))
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Pond)
 const styles = StyleSheet.create({
     pond: {
         width: '100%',
-        height: 345,
+        // height: 345,
         backgroundColor: $config.color.POND_BG_COLOR,
         // flex: 1,
         flexWrap: 'wrap',
+        flexDirection: 'row',
         paddingVertical: 12,
         paddingTop: 20,
         paddingBottom: 10,
-        justifyContent: 'space-between',
-        
 
     }
 })
