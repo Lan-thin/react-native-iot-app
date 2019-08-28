@@ -33,7 +33,6 @@ class Loading extends PureComponent {
     }
 }
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         loading: state.common.loading
     }

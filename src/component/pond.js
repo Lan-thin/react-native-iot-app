@@ -18,6 +18,7 @@ const {width, height} = Dimensions.get('window')
 class Pond extends PureComponent{
     constructor(props){
         super(props)
+        // 监听选择增氧机
 
     }
     componentDidMount(){
@@ -31,7 +32,13 @@ class Pond extends PureComponent{
                 {
                     switchList.map((item, index) => {
                         return (
-                            <SwitchItem item={item} key={index} type={type}/>
+                            <TouchableOpacity 
+                                onPress={selectSwitch.bind(this, item)}
+                                key= {index}
+                                >
+                                <SwitchItem item={item} key={index} type={type}/>
+                            </TouchableOpacity>
+                            
                         )
                     })
                 }

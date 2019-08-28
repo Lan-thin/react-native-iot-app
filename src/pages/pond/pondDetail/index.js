@@ -14,6 +14,13 @@ import Pond from '../../../component/pond'
 class pondDetail extends PureComponent{
     constructor(props) {
         super(props)
+        // 监听选择的增氧机
+        const store = global.$redux.store()
+        console.log(store)
+        store.subscribe(()=> {
+            console.log('store')
+            console.log(store.getState())
+        })
     }
     componentDidMount(){
         const vm = this
@@ -22,6 +29,7 @@ class pondDetail extends PureComponent{
     }
     render(){
         const {deviceList, name} = this.props.pondInfo
+        // console.log(this.props.selectSwitchInfo)
         return(
             <View style={styles.page}>
                 <Pond type="detail"/>
@@ -31,7 +39,8 @@ class pondDetail extends PureComponent{
 }
 const mapStateToProps = (state)=> {
     return {
-        pondInfo: state.detail.pondInfo
+        pondInfo: state.detail.pondInfo,
+        selectSwitchInfo: state.detail.selectSwitchItem
     }
 }
 const mapDispatchToProps = (dispatch) => {

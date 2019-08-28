@@ -2,7 +2,9 @@ import * as types from '../../constants'
 const initState = {
     pondInfo: {},
     // 开关列表
-    switchList: []
+    switchList: [],
+    // 选择的增氧机
+    selectSwitchItem: {}
 }
 export default function detail(state = initState, action) {
     switch (action.type) {
@@ -13,6 +15,17 @@ export default function detail(state = initState, action) {
                 switchList: getSwitchList(action.data.deviceList)
             }
             break;
+        case types.detail.SELECT_SWITCH_ITEM:
+            return {
+                ...state,
+                selectSwitchItem: action.item
+            }
+            break
+        case types.detail.INIT_SELECT_SWITCH: 
+            return {
+                ...state,
+                selectSwitchItem: {}
+            }
         default:
             return state
     }

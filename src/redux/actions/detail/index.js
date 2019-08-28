@@ -1,7 +1,6 @@
 import * as types from '../../constants'
 
 const getPondInfo = (poolId)=> {
-    
     return dispatch => {
         dispatch({
             type: types.common.OPEN_LOADING
@@ -21,6 +20,23 @@ const getPondInfo = (poolId)=> {
         })
     }
 }
+const selectSwitch = (item) => {
+    return dispatch => {
+        dispatch({
+            type: types.detail.SELECT_SWITCH_ITEM,
+            item
+        })
+    }
+} 
+const initSelectSwitch = () => {
+    return dispatch => {
+        dispatch({
+            type: types.detail.INIT_SELECT_SWITCH
+        })
+    }
+}
 export {
-    getPondInfo
+    getPondInfo,
+    selectSwitch,
+    initSelectSwitch
 }
