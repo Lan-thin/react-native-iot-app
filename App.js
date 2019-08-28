@@ -39,10 +39,8 @@ import {createAppContainer} from 'react-navigation'
 import Loading from './src/component/loading'
 const AppContainer = createAppContainer(Routers);
 const store = redux.store()
-// store.subscribe(()=>{
-//   console.log('store')
-//   console.log(store.getState())
-// })
+// global.$store = store
+
 
 
 // 全局变量初始化

@@ -4,7 +4,9 @@ const initState = {
     // 开关列表
     switchList: [],
     // 选择的增氧机
-    selectSwitchItem: {}
+    selectSwitchItem: {},
+    // 增氧机定时的信息
+    timingSwitchInfo: {}
 }
 export default function detail(state = initState, action) {
     switch (action.type) {
@@ -26,6 +28,19 @@ export default function detail(state = initState, action) {
                 ...state,
                 selectSwitchItem: {}
             }
+            break;
+        case types.detail.GET_TIMING_SWITCH_INFO: 
+            return {
+                ...state,
+                timingSwitchInfo: action.data
+            }
+            break;
+        case types.detail.INIT_TIMING_SWITCH_INFO:
+            return {
+                ...state,
+                timingSwitchInfo: {}
+            }
+            break;
         default:
             return state
     }
