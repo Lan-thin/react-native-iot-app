@@ -1,4 +1,3 @@
-let ReactNative = require('react-native');
 import {
     Dimensions,
     PixelRatio

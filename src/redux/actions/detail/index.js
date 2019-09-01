@@ -72,8 +72,7 @@ const initTimingSwitchInfo = () => {
 const changeStatus = (params) => {
     return dispatch => {
         dispatch({
-            type: types.detail.SELECT_SWITCH_ITEM,
-            item
+            type: types.common.OPEN_LOADING
         })
         const {switchId, poolId, openStatus} = params
         global.$ajax({
@@ -130,6 +129,7 @@ const isActionSuccess = (isSuccessParams) => {
 // 操作成功的回调
 const actionSuccessCallback = (openStatus) => {
     let toastText = openStatus ? '开启成功' : '关闭成功'
+    getPondInfo()
     Alert(toastText)
     clearInterval(actionSuccessTime)
     // 初始化

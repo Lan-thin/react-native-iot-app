@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     Dimensions,
-    Image
+    Image,
+    ScrollView
 } from 'react-native'
 import {
     connect
@@ -102,17 +103,24 @@ class PondDetail extends PureComponent{
         console.log(deviceList)
         return(
             <View style={styles.page}>
-                <View style={styles.title}>
-                    <Text>{name}</Text>
-                </View>
-                <Pond type="detail"/>
-                {deviceList && deviceList.length && deviceList.map((item, index)=> {
-                    return (
-                        <DeviceItem item={item}></DeviceItem>
-                    )
-                })}
-                
+                <ScrollView>
+                    <View style={styles.title}>
+                        <Text>{name}</Text>
+                    </View>
+                    <Pond type="detail"/>
+                    {deviceList && deviceList.length && deviceList.map((item, index)=> {
+                        return (
+                            <DeviceItem item={item}></DeviceItem>
+                        )
+                    })}
+                </ScrollView>
                 { timingSwitchInfo && timingSwitchInfo.id && this._renderSwitchInfo()}
+                
+                <View style={styles.pageBottom}>
+                    
+                    <Text style={[bottomItem]} onPress={this._changeStatus(0).bind(this)}>全部关闭</Text>
+                    <Text style={[bottomItem, openItem]} onPress={this._changeStatus(1).bind(this)}>全部开启</Text>
+                </View>
             </View>
         )
     }
@@ -126,7 +134,7 @@ const mapStateToProps = (state)=> {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        // 获取订单信息
+        // 获取池塘信息
         getPondInfo: (poolId)=> {
             dispatch(global.$redux.actions.detail.getPondInfo(poolId))
         },
@@ -265,5 +273,25 @@ const styles = StyleSheet.create({
     },
     closeText: {
         color: $config.color.YELLOW_COLOR
+    },
+    pageBottom: {
+        width: '100%',
+        height: 60,
+        position: 'absolute',
+        left: 0,
+        bottom: 0
+    },
+    bottomItem: {
+        width: '36%',
+        height: 60,
+        lineHeight: 60,
+        backgroundColor: $config.color.WHITE_COLOR,
+        color: $config.color.APP_MAIN_COLOR,
+        textAlign: 'center',
+    },
+    openItem: {
+        width: '64%',
+        backgroundColor: $config.color.APP_MAIN_COLOR,
+        color: $config.color.WHITE_COLOR,
     }
 })
