@@ -10,7 +10,7 @@
  export const networkTimeout = 30000
 //  默认缓存时长
  export const defaultExpires = 1000 * 3600 * 24 * 7;
-
+// 轮序时间
  export const sessionKey = {
     userInfo: 'userInfo'
  }

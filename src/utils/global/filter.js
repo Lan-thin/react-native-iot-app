@@ -52,11 +52,27 @@ const warnText = (warningLevel) => {
         errLogText
     }
 }
+const getSignal = (val) =>{
+    let signal = 0
+    if(val <= 5){
+        signal =  0
+    } else if(val >= 6 && val <= 10){
+        signal = 1
+    } else if(val >= 11 && val <=15) {
+        signal = 2
+    } else if(val>= 16 && val <= 25){
+        signal = 3
+    } else if(val >= 26){
+        signal = 4
+    }
+    return signal
+}
 
 export {
     isDeviceWarn,
     getOneDecimal,
     isUnConnect,
     getTimingText,
-    warnText
+    warnText,
+    getSignal
 }

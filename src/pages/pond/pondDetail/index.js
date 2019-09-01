@@ -12,6 +12,8 @@ import {
 } from 'react-redux'
 import * as $config from '../../../config'
 import Pond from '../../../component/pond'
+import { initTimingSwitchInfo } from '../../../redux/actions/detail';
+import DeviceItem from '../../../component/deviceItem'
 const {color, fontSize} = $config
 class PondDetail extends PureComponent{
     constructor(props) {
@@ -30,7 +32,7 @@ class PondDetail extends PureComponent{
     _renderSwitchInfo(){
         const vm = this
         const {timingSwitchInfo} = vm.props
-        const {switchName, warningLevel, deviceUniqueId, workType, switchTiming} = timingSwitchInfo
+        const {switchName, warningLevel, deviceUniqueId, workType, switchTiming, status} = timingSwitchInfo
 
         return (
             <View style={styles.switchInfoContent}>
@@ -57,29 +59,60 @@ class PondDetail extends PureComponent{
                                 })) : (<Text>无</Text>)
                             }
                         </View>
-                        
                     </View>
                     <View style={styles.action}>
                         {warningLevel ? (
                             <Text style={[styles.actionItem, warnItem]}>查看异常</Text>
                         ) :(null)}
-                        <Text style={[styles.actionItem, warningLevel ? styles.openWarnItem : styles.openNormalItem]}>立即开启</Text>
+                        <TouchableOpacity
+                            style={[styles.actionItem, warningLevel ? styles.openWarnItem : styles.openNormalItem, ]}
+                            onPress={this._changeStatus.bind(this)}>
+                            <Text style={[styles.actionText, status!=0 ? styles.closeText : null]}>{status == 0 ? '立即开启': '立即关闭'}</Text>
+                        </TouchableOpacity>
+                        
                     </View>
                 </View>
-                <Image style={styles.closeInfo} source={require('../../../assert/images/icon_close.png')}/>  
-
+                <TouchableOpacity
+                    onPress={this.props.initTimingSwitchInfo.bind(this)}>
+                    <Image style={styles.closeInfo} source={require('../../../assert/images/icon_close.png')}/>  
+                </TouchableOpacity>
             </View>
         )
     }
+    _changeStatus(openStatus = 0){
+        const vm = this
+        const {timingSwitchInfo} = vm.props
+        let params = {}
+        // 开关增氧机
+        if(timingSwitchInfo && timingSwitchInfo.id){
+            const {switchId, status} = timingSwitchInfo
+            params.switchId = switchId
+            params.openStatus = status ? 0 : 1 
+        } else {
+            // 整个塘的开关
+            params.openStatus = openStatus
+            params.poolId = vm.props.navigation.state.params.id
+        }
+        vm.props.changeStatus(params)
+    }
     render(){
-        const {deviceList, name} = this.props.pondInfo
-        const {warningLevel} = this.props.selectSwitchInfo
-        // console.log(this.props.selectSwitchInfo)
+        const {pondInfo, selectSwitchInfo, timingSwitchInfo} = this.props
+        const {deviceList, name} = pondInfo
+        const {warningLevel} = selectSwitchInfo
+        console.log(deviceList)
         return(
             <View style={styles.page}>
-                {/* <View></View> */}
+                <View style={styles.title}>
+                    <Text>{name}</Text>
+                </View>
                 <Pond type="detail"/>
-                { this._renderSwitchInfo()}
+                {deviceList && deviceList.length && deviceList.map((item, index)=> {
+                    return (
+                        <DeviceItem item={item}></DeviceItem>
+                    )
+                })}
+                
+                { timingSwitchInfo && timingSwitchInfo.id && this._renderSwitchInfo()}
             </View>
         )
     }
@@ -93,8 +126,18 @@ const mapStateToProps = (state)=> {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
+        // 获取订单信息
         getPondInfo: (poolId)=> {
             dispatch(global.$redux.actions.detail.getPondInfo(poolId))
+        },
+        // 初始化增氧机信息
+        initTimingSwitchInfo: ()=> {
+            dispatch(global.$redux.actions.detail.initSelectSwitch())
+            dispatch(global.$redux.actions.detail.initTimingSwitchInfo())
+        },
+        // 开启？关闭增氧机
+        changeStatus: (params)=>{
+            dispatch(global.$redux.actions.detail.changeStatus(params))
         }
     }
 }
@@ -108,6 +151,15 @@ const styles = StyleSheet.create({
         height: '100%',
         flexDirection: "column",
         backgroundColor: $config.color.PAGE_BG_COLOR,
+    },
+    title: {
+        width: '100%',
+        height: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: $config.color.WHITE_COLOR
+        
     },
     switchInfoContent: {
         width: '100%',
@@ -197,5 +249,21 @@ const styles = StyleSheet.create({
         width: '100%',
         borderWidth: fontSize.scaleSizeW(4),
         borderColor: $config.color.APP_MAIN_COLOR
+    },
+    closeNormalItem: {
+        borderWidth: fontSize.scaleSizeW(4),
+        borderColor: $config.color.APP_MAIN_COLOR
+    },
+    actionText: {
+        width: '100%',
+        height: fontSize.scaleSizeW(100),
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: fontSize.scaleSizeW(36),
+        color: $config.color.APP_MAIN_COLOR,
+        lineHeight: fontSize.scaleSizeW(100),
+    },
+    closeText: {
+        color: $config.color.YELLOW_COLOR
     }
 })
