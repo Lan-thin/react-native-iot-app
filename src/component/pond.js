@@ -54,6 +54,10 @@ const mapStateToProps = (state)=> {
 const mapDispatchToProps = (dispatch) => {
     return {
         selectSwitch: (switchInfo)=> {
+            const {id} = switchInfo
+            if(!id){
+                return
+            }
             dispatch(global.$redux.actions.detail.selectSwitch(switchInfo))
         }
     }
