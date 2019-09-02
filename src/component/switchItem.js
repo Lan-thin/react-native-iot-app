@@ -24,7 +24,7 @@ export default class SwitchItem extends PureComponent{
         }).start(()=>{vm.spin()})
     }
     componentDidMount(){
-        this.spin()
+        // this.spin()
     }
     // 获取增氧机的图片和颜色
     getSwitchImage(warningLevel){
@@ -51,7 +51,7 @@ export default class SwitchItem extends PureComponent{
         const vm = this
         const {item, type} = this.props
         const {warningLevel, open, id, switchName, latestCurrent} = item
-        // open && vm.spin()
+        open && vm.spin()
         // vm.spin()
         const spin = this.spinValue.interpolate({
             inputRange: [0, 1],
