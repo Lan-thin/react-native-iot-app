@@ -83,17 +83,20 @@ class PondDetail extends PureComponent{
     _changeStatus(openStatus = 0){
         const vm = this
         const {timingSwitchInfo} = vm.props
-        let params = {}
+        let params = {
+            poolId: vm.props.navigation.state.params.id
+        }
         // 开关增氧机
         if(timingSwitchInfo && timingSwitchInfo.id){
-            const {switchId, status} = timingSwitchInfo
-            params.switchId = switchId
+            const {id, status} = timingSwitchInfo
+            params.switchId = id
             params.openStatus = status ? 0 : 1 
         } else {
             // 整个塘的开关
             params.openStatus = openStatus
-            params.poolId = vm.props.navigation.state.params.id
+            // params.poolId = vm.props.navigation.state.params.id
         }
+        console.log(params)
         vm.props.changeStatus(params)
     }
     render(){
@@ -110,7 +113,7 @@ class PondDetail extends PureComponent{
                     <Pond type="detail"/>
                     {deviceList && deviceList.length && deviceList.map((item, index)=> {
                         return (
-                            <DeviceItem item={item}></DeviceItem>
+                            <DeviceItem item={item} key={index}></DeviceItem>
                         )
                     })}
                 </ScrollView>
@@ -118,8 +121,8 @@ class PondDetail extends PureComponent{
                 
                 <View style={styles.pageBottom}>
                     
-                    <Text style={[bottomItem]} onPress={this._changeStatus(0).bind(this)}>全部关闭</Text>
-                    <Text style={[bottomItem, openItem]} onPress={this._changeStatus(1).bind(this)}>全部开启</Text>
+                    <Text style={[styles.bottomItem]} onPress={this._changeStatus.bind(this, 0)}>全部关闭</Text>
+                    <Text style={[styles.bottomItem, styles.openItem]} onPress={this._changeStatus.bind(this, 1)}>全部开启</Text>
                 </View>
             </View>
         )
@@ -279,7 +282,8 @@ const styles = StyleSheet.create({
         height: 60,
         position: 'absolute',
         left: 0,
-        bottom: 0
+        bottom: 0,
+        flexDirection: 'row'
     },
     bottomItem: {
         width: '36%',

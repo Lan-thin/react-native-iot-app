@@ -37,19 +37,21 @@ const ajax = (obj, callback) => {
         data,
         url,
         method,
-        // params,
+        params,
         // headers,
         responseType
     } = obj;
+    console.log(data)
     const ajaxParamsObj = {
         url,
         method: method || 'get',
         // headers,
         responseType: responseType || 'json'
     }
+    
     data && (ajaxParamsObj.data = data)
-    // params && (ajaxParamsObj.params = params)
-
+    params && (ajaxParamsObj.params = params)
+    console.log(ajaxParamsObj)
     server(ajaxParamsObj).then(rs => {
         const { code, message } = rs.data;
         console.log(rs)

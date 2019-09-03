@@ -10,6 +10,7 @@ const getPondInfo = (poolId)=> {
         dispatch({
             type: types.common.OPEN_LOADING
         })
+        console.log(poolId)
         global.$ajax({
             url: `pools/${poolId}`,
             // data: params.data
@@ -42,7 +43,6 @@ const selectSwitch = (item) => {
                 url: `switch/${id}/timings`,
             },(res = {}) => {
                 const {code, data} = res
-                console.log(res)
                 dispatch({
                     type: types.detail.GET_TIMING_SWITCH_INFO,
                     data
@@ -77,65 +77,79 @@ const changeStatus = (params) => {
         const {switchId, poolId, openStatus} = params
         global.$ajax({
             url: switchId ? `switch/${switchId}` : `pools/${poolId}/status`,
+            method: 'PUT',
             data: {
                 openStatus,
+                timeUnix: 0
             }
         }, (res = {}) => {
             const { code, data } = res;
-            const {requestKey, sumSwitches} = data
-            // 整个塘的 或者单个增氧机进行轮序
-            if(requestKey || switchId) {
-                let time = 0
-                let isSuccessParams = {
-                    openStatus
-                }
-                requestKey && (isSuccessParams.requestKey = requestKey)
-                switchId && (isActionSuccess.switchId = switchId)
-                actionSuccessTime = setInterval(()=>{
-                    isActionSuccess(isSuccessParams)
-                }, 2000)
+            let isSuccessParams = {
+                openStatus
             }
+            if(data) {
+                const {requestKey, sumSwitches} = data
+                requestKey && (isSuccessParams.requestKey = requestKey)
+            }
+            
+            // 整个塘的 或者单个增氧机进行轮序
+            // if(requestKey || switchId) {
+                let time = 0
+                // requestKey && (isSuccessParams.requestKey = requestKey)
+                switchId && (isSuccessParams.switchId = switchId)
+                actionSuccessTime = setInterval(()=>{
+                    dispatch(isActionSuccess(isSuccessParams, poolId))
+                }, 2000)
+            // }
         })
     }
 }
 
 // 校验是否开启成功
-const isActionSuccess = (isSuccessParams) => {
-    time += 2000
-    const {switchId, requestKey, openStatus} = isSuccessParams
-    global.$ajax({
-        url: 'valid/switches/status',
-        data: isSuccessParams
-    }, (res = {})=> {
-        const {success, checkedSwitches, sumSwitches} = res
-        if(success) {
-            actionSuccessCallback(isSuccessParams.openStatus)
-        } else {
-            // 针对整个塘的
-            if(!switchId){
-                checkedSwitches != currentOpenNumber &&(time = 0)
+const isActionSuccess = (isSuccessParams, poolId) => {
+    return dispatch => {
+        time += 2000
+        const {switchId, requestKey, openStatus} = isSuccessParams
+        global.$ajax({
+            url: 'valid/switches/status',
+            params: isSuccessParams
+        }, (res = {})=> {
+            const {success, checkedSwitches, sumSwitches} = res.data
+            if(success) {
+                dispatch(actionSuccessCallback(isSuccessParams.openStatus, poolId))
+            } else {
+                // 针对整个塘的
+                if(!switchId){
+                    checkedSwitches != currentOpenNumber &&(time = 0)     
+                } 
                 // 超出时间 即操作失败
                 if(time >= global.$config.appConfig.networkTimeout){
-                    Alert('网络超时')
+                    // Alert('网络超时')
                     clearInterval(actionSuccessTime)
                     time = 0
                     initSelectSwitch()
                     initTimingSwitchInfo()
                 }
             }
-        }
-    })
+        })
+    }
+    
+    
+    
 }
 // 操作成功的回调
-const actionSuccessCallback = (openStatus) => {
-    let toastText = openStatus ? '开启成功' : '关闭成功'
-    getPondInfo()
-    Alert(toastText)
-    clearInterval(actionSuccessTime)
-    // 初始化
-    time = 0
-    initSelectSwitch()
-    initTimingSwitchInfo()
+const actionSuccessCallback = (openStatus, poolId) => {
+    return dispatch => {
+        let toastText = openStatus ? '开启成功' : '关闭成功'
+        dispatch(getPondInfo(poolId))
+        // Alert(toastText)
+        clearInterval(actionSuccessTime)
+        // 初始化
+        time = 0
+        dispatch(initSelectSwitch())
+        dispatch(initTimingSwitchInfo())
+    }
+    
 }
 
 export {

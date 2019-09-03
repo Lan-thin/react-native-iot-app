@@ -17,6 +17,7 @@ export default class DeviceItem extends PureComponent{
         // 每个信号的高度
         let height = 14
         let sigal = global.$utils.getSignal(signalStrength)
+        console.log(sigal)
         // 每个信号的颜色
         let color = $config.color.SIGAL_COLOR
         sigal == 1 && (color = $config.color.WARN_COLOR)
@@ -26,7 +27,8 @@ export default class DeviceItem extends PureComponent{
             i == 0 && (height = 8)
             i == 1 && (height = 10)
             i == 2 && (height = 12)
-            sigalArr.push(<View style={[styles.sigalItem, {height, color: sigal <=i ? color: null}]}></View>)             
+            i == 3 && (height = 14)
+            sigalArr.push(<View style={[styles.sigalItem, {height, backgroundColor: sigal >i ? color: $config.color.SIGAL_COLOR}]} key={i}></View>)             
         }
         return sigalArr
     }
@@ -44,12 +46,12 @@ export default class DeviceItem extends PureComponent{
                         {vm._renderSigal()}
                     </View>
                     <View style={styles.deviceInfo}>
-                        <Text>控制器<Text style={{color: $config.color.APP_MAIN_COLOR}}>{deviceNum}</Text>{uniqueId}</Text>
+                        <Text>控制器<Text style={{color: $config.color.APP_MAIN_COLOR}}>:{deviceNum}</Text>{uniqueId}</Text>
                         <Text>{deviceNumber.length}台增氧机</Text>
                     </View>
                 </View>
                 <View style={styles.right}>
-                    <Image source={require("../assert/images/right.png")} style={styles.icon_Right}></Image>
+                    <Image source={require("../assert/images/right.png")} style={styles.iconRight}></Image>
                 </View>
             </View>
         )
@@ -62,12 +64,13 @@ const styles = StyleSheet.create({
         backgroundColor: $config.color.WHITE_COLOR,
         alignItems: 'center',
         paddingHorizontal: 15,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        flexDirection: 'row'
     },
     left: {
         flexDirection: 'row',
         height: '100%',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     sigal: {
         flexDirection: 'row',
@@ -85,9 +88,11 @@ const styles = StyleSheet.create({
         marginLeft: 15,
     },
     right: {
-        alignItems: 'center'
+        height: '100%',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
-    icon_Right: {
+    iconRight: {
         width: 12,
         height: 12
     }
